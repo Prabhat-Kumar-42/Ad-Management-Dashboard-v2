@@ -3,6 +3,9 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import { appRouter } from './app.route.js';
+import { nonExistingRoutesErrorHandler } from './error-handlers/non-existing-routes.error-handler.js';
+import { jwtErrorHandler } from './error-handlers/jwt.error-handler.js';
+import { globalErrorHandler } from './error-handlers/global.error-handler.js';
 
 // /src/app.ts
 dotenv.config();
@@ -14,3 +17,8 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use('/api', appRouter);
+
+//error-handlers
+app.use(nonExistingRoutesErrorHandler);
+app.use(jwtErrorHandler);
+app.use(globalErrorHandler);
