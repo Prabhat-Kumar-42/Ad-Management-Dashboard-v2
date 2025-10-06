@@ -9,8 +9,8 @@ export const authMiddleware = (
   res: Response,
   next: NextFunction
 ) => {
-  const authHeader = req.headers.get("authorization");
-  const token = authHeader && authHeader.split(" ")[1];
+  const authHeader = req.headers['authorization'];
+  const token = typeof authHeader === 'string' ? authHeader.split(" ")[1] : undefined;
   if (!token) return res.sendStatus(401);
 
   try {
