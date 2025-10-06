@@ -1,17 +1,18 @@
 "use client";
 
-import { API } from "@/lib/api";
 import { useAuth } from "@/providers/auth-provider/AuthProvider";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { loginSchema } from "@repo/validators-and-types/validators/auth.validators";
+import type { LoginInput } from "@repo/validators-and-types/types/auth.types";
+import { API } from "@/lib/api";
 
-// /src/app/login/components/LoginForm.tsx
 export default function LoginForm() {
   const { login } = useAuth();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [message, setMessage] = useState("");
   const searchParams = useSearchParams();
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
     const reason = searchParams.get("reason");
@@ -20,10 +21,13 @@ export default function LoginForm() {
     }
   }, [searchParams]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<LoginInput>({
+    resolver: zodResolver(loginSchema),
+  });
+
+  const onSubmit = async (data: LoginInput) => {
     try {
-      const res = await API.post("/auth/login", { email, password });
+      const res = await API.post("/auth/login", data);
       login(res.data.token, res.data.user);
     } catch (err: any) {
       alert(err.response?.data?.message || "Login failed");
@@ -31,25 +35,33 @@ export default function LoginForm() {
   };
 
   return (
-    <div>
-      <h1>Login</h1>
-      {message && <p style={{ color: "red" }}>{message}</p>}
-      <form onSubmit={handleSubmit}>
+    <div className="max-w-md mx-auto mt-20 p-6 border rounded shadow">
+      <h1 className="text-2xl font-bold mb-4">Login</h1>
+      {message && <p className="text-red-500 mb-4">{message}</p>}
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
         <input
           type="email"
           placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
+          {...register("email")}
+          className="border p-2 rounded"
         />
+        {errors.email && <p className="text-red-500">{errors.email.message}</p>}
+
         <input
           type="password"
           placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
+          {...register("password")}
+          className="border p-2 rounded"
         />
-        <button type="submit">Login</button>
+        {errors.password && <p className="text-red-500">{errors.password.message}</p>}
+
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
+        >
+          {isSubmitting ? "Logging in..." : "Login"}
+        </button>
       </form>
     </div>
   );
