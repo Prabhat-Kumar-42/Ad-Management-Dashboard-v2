@@ -11,7 +11,11 @@
     "noUncheckedSideEffectImports": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"],
+      "@/*": ["./src/*"]
     }
-  }
+  },
+  "include": [
+    "server.ts", 
+    "src/**/*.ts" 
+  ]
 }
