@@ -2,7 +2,7 @@
 import axios from "axios";
 
 // /src/lib/api.ts
-const rawBase = process.env.API_BASE_URL || "http://localhost:4000";
+const rawBase = process.env.API_BASE_URL || "http://localhost:3001";
 let base = rawBase.replace(/\/$/, ""); // strip trailing slash
 
 if (!base.endsWith("/api")) {
