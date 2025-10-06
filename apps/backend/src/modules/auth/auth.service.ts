@@ -1,16 +1,17 @@
 import bcrypt from "bcrypt";
-import { prisma } from "../db/db.js";
+import { prisma } from "@/db/db.js";
 import {
   generateAccessToken,
   generateRefreshToken,
-} from "../utils/jwt.utils.js";
-import { userDataSanitize } from "../utils/dataModelSanitize.utils.js";
+} from "@/utils/jwt.utils.js";
+import { userDataSanitize } from "@/utils/dataModelSanitize.utils.js";
+import { BadRequestError, UnauthorizedError } from "@/utils/http-errors.utils.js";
 
-// /src/auth/auth.service.js
+// /src/modules/auth/auth.service.js
 export const authService = {
   register: async function (name: string, email: string, password: string) {
     const existing = await prisma.user.findUnique({ where: { email } });
-    if (existing) throw new Error("Email already exists");
+    if (existing) throw new BadRequestError("Email already exists");
 
     const hash = await bcrypt.hash(password, 10);
     const user = await prisma.user.create({ data: { name, email, passwordHash: hash } });
@@ -20,10 +21,10 @@ export const authService = {
 
   login: async function (email: string, password: string) {
     const user = await prisma.user.findUnique({ where: { email } });
-    if (!user) throw new Error("Invalid credentials");
+    if (!user) throw new UnauthorizedError("Invalid credentials");
 
     const valid = await bcrypt.compare(password, user.passwordHash);
-    if (!valid) throw new Error("Invalid credentials");
+    if (!valid) throw new UnauthorizedError("Invalid credentials");
 
     const accessToken = generateAccessToken(user.id, user.email);
     const { refreshToken, expiresAt } = generateRefreshToken();
@@ -42,7 +43,7 @@ export const authService = {
     });
 
     if (!existing || existing.expiresAt < new Date()) {
-      throw new Error("Invalid or expired refresh token");
+      throw new UnauthorizedError("Invalid or expired refresh token");
     }
 
     const user = existing.user;
