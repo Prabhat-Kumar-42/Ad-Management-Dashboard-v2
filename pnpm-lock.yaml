@@ -26,6 +26,9 @@ importers:
       '@repo/validators-and-types':
         specifier: workspace:*
         version: link:../../packages/validators-and-types
+      axios:
+        specifier: ^1.12.2
+        version: 1.12.2
       bcrypt:
         specifier: ^6.0.0
         version: 6.0.0
