@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from "express";
-import type { AuthRequest } from "../types/AuthRequest.js";
-import type { tokenalizedUserData } from "../types/tokenalizedUserData.type.js";
-import { verifyToken } from "../utils/jwt.utils.js";
+import type { AuthRequest } from "@/types/AuthRequest.js";
+import type { tokenalizedUserData } from "@/types/tokenalizedUserData.type.js";
+import { verifyToken } from "@/utils/jwt.utils.js";
 
 // /src/middlewares/authenticate.middleware.ts
 export function authMiddleware(
