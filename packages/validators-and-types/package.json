@@ -4,9 +4,15 @@
   "description": "",
   "main": "index.js",
   "type": "module",
-  "scripts": {},
+  "scripts": {
+    "dev": "tsc --watch",
+    "build": "tsc"
+  },
   "exports": {
-    "./validators/*": "./validators/*.ts"
+    "./validators/*": {
+      "types": "./src/validators/*.ts",
+      "default": "./dist/validators/*.js"
+    }
   },
   "keywords": [],
   "author": "",

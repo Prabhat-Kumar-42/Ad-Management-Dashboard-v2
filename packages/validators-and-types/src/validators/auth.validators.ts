@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-// packages/validators-and-types/validators/auth.validators.ts
+// packages/src/validators-and-types/validators/auth.validators.ts
 
 export const registerSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
