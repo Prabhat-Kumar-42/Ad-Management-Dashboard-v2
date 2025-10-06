@@ -28,7 +28,7 @@ export default function LoginForm() {
   const onSubmit = async (data: LoginInput) => {
     try {
       const res = await API.post("/auth/login", data);
-      login(res.data.token, res.data.user);
+      login(res.data.accessToken, res.data.user);
     } catch (err: any) {
       alert(err.response?.data?.message || "Login failed");
     }
