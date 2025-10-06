@@ -9,5 +9,9 @@
     "exactOptionalPropertyTypes": true,
     "verbatimModuleSyntax": true,
     "noUncheckedSideEffectImports": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"],
+    }
   }
 }
