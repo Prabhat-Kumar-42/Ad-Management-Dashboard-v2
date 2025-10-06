@@ -1,49 +1,63 @@
 "use client";
+
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { registerSchema } from "@repo/validators-and-types/validators/auth.validators";
+import type { RegisterInput } from "@repo/validators-and-types/types/auth.types";
 import { API } from "@/lib/api";
-import { useState } from "react";
+import { useAuth } from "@/providers/auth-provider/AuthProvider";
 
-// /src/app/signup/page.tsx
 export default function SignupPage() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const { login } = useAuth();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<RegisterInput>({
+    resolver: zodResolver(registerSchema),
+  });
+
+  const onSubmit = async (data: RegisterInput) => {
     try {
-      await API.post("/auth/signup", { name, email, password });
-      alert("Signup successful, please login.");
+      const res = await API.post("/auth/register", data);
+      login(res.data.token, res.data.user); // auto-login after signup
     } catch (err: any) {
       alert(err.response?.data?.message || "Signup failed");
     }
   };
 
   return (
-    <div>
-      <h1>Signup</h1>
-      <form onSubmit={handleSubmit}>
+    <div className="max-w-md mx-auto mt-20 p-6 border rounded shadow">
+      <h1 className="text-2xl font-bold mb-4">Signup</h1>
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
         <input
           type="text"
           placeholder="Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
+          {...register("name")}
+          className="border p-2 rounded"
         />
+        {errors.name && <p className="text-red-500">{errors.name.message}</p>}
+
         <input
           type="email"
           placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
+          {...register("email")}
+          className="border p-2 rounded"
         />
+        {errors.email && <p className="text-red-500">{errors.email.message}</p>}
+
         <input
           type="password"
           placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
+          {...register("password")}
+          className="border p-2 rounded"
         />
-        <button type="submit">Signup</button>
+        {errors.password && <p className="text-red-500">{errors.password.message}</p>}
+
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className="bg-green-500 text-white p-2 rounded hover:bg-green-600"
+        >
+          {isSubmitting ? "Registering..." : "Signup"}
+        </button>
       </form>
     </div>
   );
