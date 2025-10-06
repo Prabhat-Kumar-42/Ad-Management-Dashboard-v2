@@ -17,7 +17,9 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use('/api', appRouter);
-
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'OK', timestamp: new Date().toISOString() });
+});
 //error-handlers
 app.use(nonExistingRoutesErrorHandler);
 app.use(jwtErrorHandler);
