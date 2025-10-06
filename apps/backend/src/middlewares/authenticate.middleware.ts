@@ -1,14 +1,14 @@
-import type { Request, Response, NextFunction } from "express";
-import type { AuthRequest } from "@/types/AuthRequest.js";
-import type { tokenalizedUserData } from "@/types/tokenalizedUserData.type.js";
+import type { Response, NextFunction } from "express";
+import type { AuthRequest } from "@/types/auth-request.js";
+import type { tokenalizedUserData } from "@/types/tokenalized-user-data.type.js";
 import { verifyToken } from "@/utils/jwt.utils.js";
 
 // /src/middlewares/authenticate.middleware.ts
-export function authMiddleware(
+export const authMiddleware = (
   req: AuthRequest,
   res: Response,
   next: NextFunction
-) {
+) => {
   const authHeader = req.headers.get("authorization");
   const token = authHeader && authHeader.split(" ")[1];
   if (!token) return res.sendStatus(401);
@@ -20,4 +20,4 @@ export function authMiddleware(
   } catch {
     return res.sendStatus(403);
   }
-}
+};
