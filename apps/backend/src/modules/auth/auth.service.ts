@@ -4,7 +4,7 @@ import {
   generateAccessToken,
   generateRefreshToken,
 } from "@/utils/jwt.utils.js";
-import { userDataSanitize } from "@/utils/dataModelSanitize.utils.js";
+import { userDataSanitize } from "@/utils/data-model-sanitize.utils.js";
 import { BadRequestError, UnauthorizedError } from "@/utils/http-errors.utils.js";
 
 // /src/modules/auth/auth.service.js
