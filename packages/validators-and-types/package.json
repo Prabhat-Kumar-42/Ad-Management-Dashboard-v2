@@ -12,6 +12,10 @@
     "./validators/*": {
       "types": "./src/validators/*.ts",
       "default": "./dist/validators/*.js"
+    },
+    "./types/*": {
+      "types": "./src/types/*.ts",
+      "default": "./dist/types/*.js"
     }
   },
   "keywords": [],
