@@ -1,5 +1,5 @@
 import type { User } from "@prisma/client";
-import type { sanitizedUser } from "@/types/sanitizedModel.types.js";
+import type { sanitizedUser } from "@/types/sanitized-model.types.js";
 
 // /src/utils/dataModelSanitize.utils.js
 export function userDataSanitize(user: User): sanitizedUser {
