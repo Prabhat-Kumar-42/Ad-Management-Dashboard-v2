@@ -1,20 +1,22 @@
 "use client";
-import { ReactNode, useEffect } from "react";
+
+import { useEffect, ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/providers/auth-provider/AuthProvider";
 
-// /src/components/RequiredAuth.tsx
 export default function RequireAuth({ children }: { children: ReactNode }) {
-  const { token } = useAuth();
+  const { token, loading } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
-    if (!token) {
+    if (!loading && !token) {
       router.replace("/login");
     }
-  }, [token, router]);
+  }, [token, loading, router]);
 
-  if (!token) return null; // or loading spinner
+  if (loading || !token) {
+    return <p>Loading...</p>; // or a spinner component
+  }
 
   return <>{children}</>;
 }
