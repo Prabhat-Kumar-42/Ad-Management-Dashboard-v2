@@ -39,3 +39,34 @@ export const processMetaCallback = async (code: string, userId: string) => {
 
   return { account };
 };
+
+export const fetchUserAccounts = async (userId: string) => {
+  return prisma.adAccount.findMany({
+    where: { userId },
+  });
+};
+
+
+export const deauthMetaAccount = async (userId: string) => {
+  const account = await prisma.adAccount.findFirst({
+    where: { userId, provider: "META" },
+  });
+
+  if (!account) return null;
+
+  try {
+    // Revoke on Meta (requires a valid access token)
+    await axios.delete(`https://graph.facebook.com/v18.0/me/permissions`, {
+      params: { access_token: account.accessToken },
+    });
+  } catch (err: any) {
+    console.warn("Meta token revoke failed (non-fatal):", err.message);
+  }
+
+  // Delete from DB
+  await prisma.adAccount.deleteMany({
+    where: { userId, provider: "META" },
+  });
+
+  return true;
+};
