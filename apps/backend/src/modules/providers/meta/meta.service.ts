@@ -3,7 +3,12 @@ import { prisma } from "@/db/db.js";
 
 // /src/modules/providers/meta/meta.service.js
 export const generateMetaAuthUrl = () => {
-  return `https://www.facebook.com/v18.0/dialog/oauth?client_id=${process.env.META_APP_ID}&redirect_uri=${process.env.META_REDIRECT_URI}&scope=ads_read,ads_management`;
+  const redirectUri = process.env.META_REDIRECT_URI;
+  if (!redirectUri) throw new Error("META_REDIRECT_URI not set");
+
+  return `https://www.facebook.com/v18.0/dialog/oauth?client_id=${process.env.META_APP_ID}&redirect_uri=${encodeURIComponent(
+    redirectUri
+  )}&scope=ads_read,ads_management`;
 };
 
 export const processMetaCallback = async (code: string, userId: string) => {
