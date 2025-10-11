@@ -1,10 +1,11 @@
 "use client";
 
-import RequireAuth from "@/components/RequiredAuth";
+import { useEffect, useState } from "react";
 import { API } from "@/lib/api";
 import { useAuth } from "@/providers/auth-provider/AuthProvider";
-import { useEffect, useState } from "react";
+import RequireAuth from "@/components/RequiredAuth";
 
+// /src/app/dashboard/page.tsx
 type MetaAccount = {
   id: number;
   providerAccountId: string;
@@ -44,7 +45,7 @@ export default function DashboardPage() {
     try {
       await API.delete("/meta/deauth");
       alert("Meta account disconnected successfully.");
-      await fetchAccounts(); // refresh list
+      await fetchAccounts();
     } catch (err: any) {
       alert(err.response?.data?.message || "Failed to disconnect Meta account");
     } finally {
