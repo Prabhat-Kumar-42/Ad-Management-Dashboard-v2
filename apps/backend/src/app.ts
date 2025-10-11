@@ -18,6 +18,16 @@ app.use(cookieParser());
 
 app.use('/api', appRouter);
 
+/* debug, ednpoint, will delete this in future
+
+// Handle requests to /.well-known (harmless but causing 404)
+app.use('/.well-known', (req, res) => {
+  console.log("Ignored .well-known request:", req.originalUrl);
+  res.status(404).send("Not found");
+});
+
+*/
+
 app.get('/health', (req, res) => {
   res.status(200).json({ status: 'OK', timestamp: new Date().toISOString() });
 });
