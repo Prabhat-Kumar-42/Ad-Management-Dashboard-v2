@@ -1,7 +1,7 @@
 import axios from "axios";
 import { prisma } from "@/db/db.js";
 
-// /src/modules/providers/meta/meta.service.js
+// /src/modules/providers/meta/oauth/metaOAuth.service.js
 export const generateMetaAuthUrl = () => {
   const redirectUri = process.env.META_REDIRECT_URI;
   if (!redirectUri) throw new Error("META_REDIRECT_URI not set");

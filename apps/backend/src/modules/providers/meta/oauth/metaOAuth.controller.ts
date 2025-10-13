@@ -4,14 +4,14 @@ import {
   fetchUserAccounts,
   generateMetaAuthUrl,
   processMetaCallback,
-} from "./meta.service.js";
+} from "./metaOAuth.service.js";
 import type { AuthRequest } from "@/types/auth-request.js";
 import {
   BadRequestError,
   UnauthorizedError,
 } from "@/utils/http-errors.utils.js";
 
-// /src/modules/providers/meta/meta.controller.js
+// /src/modules/providers/meta/oauth/metaOauth.controller.js
 export const getMetaAuthUrl = (req: AuthRequest, res: Response) => {
   const url = generateMetaAuthUrl();
   return res.json({ url });
