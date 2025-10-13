@@ -7,6 +7,7 @@ import type { RegisterInput } from "@repo/validators-and-types/types/auth.types"
 import { API } from "@/lib/api";
 import { useAuth } from "@/providers/auth-provider/AuthProvider";
 
+// /src/app/signup/page.tsx
 export default function SignupPage() {
   const { login } = useAuth();
 

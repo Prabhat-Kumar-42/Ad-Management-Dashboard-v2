@@ -9,6 +9,7 @@ import { loginSchema } from "@repo/validators-and-types/validators/auth.validato
 import type { LoginInput } from "@repo/validators-and-types/types/auth.types";
 import { API } from "@/lib/api";
 
+// /src/app/login/components/LoginForm.tsx
 export default function LoginForm() {
   const { login } = useAuth();
   const searchParams = useSearchParams();

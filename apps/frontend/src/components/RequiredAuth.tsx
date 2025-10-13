@@ -4,6 +4,7 @@ import { useEffect, ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/providers/auth-provider/AuthProvider";
 
+// /src/components/RequiredAuth.tsx
 export default function RequireAuth({ children }: { children: ReactNode }) {
   const { token, loading } = useAuth();
   const router = useRouter();
